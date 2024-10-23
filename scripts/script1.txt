@@ -1,0 +1,19 @@
+This is my script
+My script is amazin'
+
+Give it a lick
+It tastes just like raisins
+
+I think you'll find that this text is a long line
+
+And
+
+These are
+
+Some short ones
+
+
+
+
+
+End
