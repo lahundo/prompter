@@ -28,6 +28,33 @@ pip3 install -r requirements.txt
 ### Running on a Raspberry Pi
 Coming soon
 
+## Foot switch support
+This is built to support a PCSensor footswitch using the [footswitch](https://github.com/rgerganov/footswitch) project.
+
+For convenience, an arm64 Debian package of this is provided.  No modifications to the upstream project are part of this.
+The upstream footswitch project is MIT licensed, so I believe it is safe to redistribute this here; however please feel
+free to build this yourself if you prefer.
+
+### Installation
+On a Raspberry Pi OS system, you'll first need to install `libhidapi-libusb0`:
+```$console
+sudo apt update
+sudo apt install libhidapi-libusb0
+```
+
+Then install the footswitch package:
+```$console
+sudo dpkg -i footswitch_1.0.0_arm64.deb
+```
+
+### Configuration
+You can run `./configure_pedals.sh` to set the default pedal configuration:
+|Left pedal      |Center pedal|Right pedal    |
++----------------+------------+---------------+
+|Scroll backwards|Configure   |Scroll forwards|
+
+
+
 ## Status
 ### Current status
 * Load text from a script file
