@@ -4,6 +4,7 @@ from watchdog.observers import Observer
 import configparser
 import logging
 import pygame
+import socket
 import sys
 
 logger = logging.getLogger(__name__)
@@ -28,6 +29,21 @@ class Prompter:
     default_script = "scripts/script1.txt"
     default_padding = 60
 
+    def GetInfo(self):
+        self.info = {}
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.settimeout(0)
+        try:
+            # doesn't even have to be reachable
+            s.connect(('1.1.1.1', 1))
+            IP = s.getsockname()[0]
+        except Exception:
+            IP = 'none'
+        finally:
+            s.close()
+        self.info["hostname"] = socket.gethostname()
+        self.info["address"] = IP
+
     def UpdateConfig(self):
         logger.debug("Config file updated")
         prev_script = self.script
@@ -47,7 +63,7 @@ class Prompter:
             self.screen_height = config.getint("display", "height", fallback=self.default_screen_height)
             self.background_color = config.get("display", "bg", fallback=self.default_bg_color)
             self.text_color = config.get("display", "text", fallback=self.default_text_color)
-            self.padding = config.get("display", "padding", fallback=self.default_padding)
+            self.padding = config.getint("display", "padding", fallback=self.default_padding)
             self.font_size = config.getint("font", "font_size", fallback=self.default_font_size)
             self.scroll_speed = config.getint("font", "scroll_speed", fallback=self.default_scroll_speed)
             self.script = config.get("script", "current_script", fallback=self.default_script)
@@ -107,9 +123,19 @@ class Prompter:
             self.screen.blit(text_surface, (text_x, y_offset))
             y_offset += text_surface.get_height()
 
+    def ShowInfo(self):
+        y_offset = 0
+        for i in self.info:
+            text_surface = self.font.render(i + ": " + self.info[i], True, pygame.Color(255,255,255))
+            text_surface = pygame.transform.flip(text_surface, False, True)
+            text_x = self.padding
+            self.screen.blit(text_surface, (text_x, y_offset))
+            y_offset += text_surface.get_height()
+
     def __init__(self):
         logger.info("Prompter started!")
         # Get our config data
+        self.GetInfo()
         self.ReadConfig()
 
         # Set up pygame
@@ -151,18 +177,26 @@ class Prompter:
                     sys.exit()
 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_DOWN]:
-                if self.yPosition + self.script_height > self.font.get_height(): # Don't scroll the last line off screen
-                    self.yPosition -= self.scroll_speed  # Scroll down
-            if keys[pygame.K_UP]:
-                if self.yPosition < self.screen_height - 2*self.font.get_height(): # Don't scroll the first line off screen
-                    self.yPosition += self.scroll_speed  # Scroll up for reversing effect
+            
+            # Configuration key takes precedence
+            if keys[pygame.K_c]:
+                # TODO: More configuration options with chorded pedals
+                self.screen.fill(pygame.Color(0,0,0))
+                self.ShowInfo()
 
-            # Clear screen
-            self.screen.fill(pygame.Color(self.background_color))
+            else:
+                if keys[pygame.K_DOWN]:
+                    if self.yPosition + self.script_height > self.font.get_height(): # Don't scroll the last line off screen
+                        self.yPosition -= self.scroll_speed  # Scroll down
+                if keys[pygame.K_UP]:
+                    if self.yPosition < self.screen_height - 2*self.font.get_height(): # Don't scroll the first line off screen
+                        self.yPosition += self.scroll_speed  # Scroll up for reversing effect
 
-            # Render text
-            self.RenderText(self.yPosition)
+                # Clear screen
+                self.screen.fill(pygame.Color(self.background_color))
+
+                # Render text
+                self.RenderText(self.yPosition)
 
             # Update display
             pygame.display.flip()
