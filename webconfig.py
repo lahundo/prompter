@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)   
   
 logger = logging.getLogger(__name__)
-logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', filename='prompter.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', filename='webconfig.log', encoding='utf-8', level=logging.DEBUG)
 
 # Variables set via config; default values here
 config_file = "prompter.ini"
