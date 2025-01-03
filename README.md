@@ -25,6 +25,15 @@ pip3 install -r requirements.txt
 ./prompter.py
 ```
 
+### Running the web control panel
+```$console
+./webconfig.py
+```
+
+Connect to http://localhost:5000
+
+(Note that script uploading is not complete yet)
+
 ### Running on a Raspberry Pi
 Coming soon
 
@@ -60,6 +69,9 @@ You can run `./configure_pedals.sh` to set the default pedal configuration:
 * Load text from a script file
 * Load configuration values from a config file
 * Update on-the-fly when configuration values are changed
+* Web interface for previewing scripts, changing active script, changing settings
+
+There is currently _NO_ error detection on values for the configuration file.  Setting an invalid value will cause crashes.
 
 ### TODO
 * Update the script when it changes on disk
