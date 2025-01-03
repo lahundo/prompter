@@ -6,6 +6,7 @@ import logging
 import pygame
 import socket
 import sys
+import os
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', filename='prompter.log', encoding='utf-8', level=logging.DEBUG)
@@ -26,7 +27,7 @@ class Prompter:
     default_text_color = "#ffffff"
     default_font_size = 80
     default_scroll_speed = 4
-    default_script = "scripts/script1.txt"
+    default_script = "script1.txt"
     default_padding = 60
 
     def GetInfo(self):
@@ -77,7 +78,7 @@ class Prompter:
     def LoadScript(self):
         logger.info("Loading script " + self.script)
         self.lines = []
-        scriptfile = open(self.script, 'r')
+        scriptfile = open(os.path.join("scripts", self.script), 'r')
         raw_lines = scriptfile.readlines()
         
         # Wrap each line of text
