@@ -48,9 +48,25 @@ class Prompter:
     def UpdateConfig(self):
         logger.debug("Config file updated")
         prev_script = self.script
+        prev_font_size = self.font_size
+        prev_screen_width = self.screen_width
+        prev_screen_height = self.screen_height
+        
         self.ReadConfig()
         if prev_script != self.script:
             # Update the script and reset the y position
+            self.LoadScript()
+        
+        # If pygame-specific settings have changed, they need to be updated
+        # (Unfortunately this means losing our 'place' in the script)
+        update_script = False
+        if prev_font_size != self.font_size:
+            self.font = pygame.font.Font(None, self.font_size)
+            update_script = True
+        if prev_screen_width != self.screen_width or prev_screen_height != self.screen_height:
+            self.screen = pygame.display.set_mode((self.screen_width, self.screen_height), vsync=True)
+            update_script = True
+        if update_script:
             self.LoadScript()
 
     def ReadConfig(self):
@@ -68,6 +84,7 @@ class Prompter:
             self.font_size = config.getint("font", "font_size", fallback=self.default_font_size)
             self.scroll_speed = config.getint("font", "scroll_speed", fallback=self.default_scroll_speed)
             self.script = config.get("script", "current_script", fallback=self.default_script)
+
         except Exception as e:
             logger.error(f"Error loading configuration: {str(e)}")
         finally:
