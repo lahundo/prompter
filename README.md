@@ -30,9 +30,7 @@ pip3 install -r requirements.txt
 ./webconfig.py
 ```
 
-Connect to http://localhost:5000
-
-(Note that script uploading is not complete yet)
+Connect to http://localhost:5000 (or whatever you changed the port to in `prompter.ini`)
 
 ### Running on a Raspberry Pi
 Coming soon
@@ -69,14 +67,16 @@ You can run `./configure_pedals.sh` to set the default pedal configuration:
 * Load text from a script file
 * Load configuration values from a config file
 * Update on-the-fly when configuration values are changed
-* Web interface for previewing scripts, changing active script, changing settings
+* Web interface for previewing scripts, changing active script, changing settings, adding/deleting scripts
+* Controllable by USB foot pedals
+* 3D printable case
 
 There is currently _NO_ error detection on values for the configuration file.  Setting an invalid value will cause crashes.
 
 ### TODO
+* Document physical build parts and process
+* Document Pi installation
+* Document usage properly
 * Update the script when it changes on disk
 * Error detection for configuration
-* Map foot pedals to control scrolling
-* 3D printed case
-* Configuration interface (HTTP and/or Bluetooth) instead of an .ini file
 * Maybe autoscrolling?
