@@ -31,6 +31,7 @@ def readConfig():
     global font_size
     global scroll_speed
     global script
+    global port
 
     logger.debug("Loading configuration...")
     try:
@@ -46,6 +47,7 @@ def readConfig():
         font_size = config.getint("font", "font_size", fallback=default_font_size)
         scroll_speed = config.getint("font", "scroll_speed", fallback=default_scroll_speed)
         script = config.get("script", "current_script", fallback=default_script)
+        port = config.get("web", "port", fallback=5000)
     except Exception as e:
         logger.error(f"Error loading configuration: {str(e)}")
     finally:
@@ -158,4 +160,6 @@ def success():
         return render_template("index.html", name = f.filename)
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    global port
+    readConfig()
+    app.run(debug=False, port=port)
