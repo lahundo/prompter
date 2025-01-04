@@ -150,6 +150,14 @@ def main():
         scriptlist = getScripts(),
         scripttext = text
     )
+
+@app.route('/delete')
+def deletescript():
+    script = request.args.get('script')
+    if script:
+        if os.path.exists(os.path.join("scripts", script)):
+            os.remove(os.path.join("scripts", script))
+    return redirect("/")
   
 @app.route('/', methods = ['POST'])
 def success():
@@ -157,7 +165,7 @@ def success():
         f = request.files['file']
         logger.info("Receiving script: " + f.filename)
         f.save(os.path.join("scripts", f.filename))
-        return render_template("index.html", name = f.filename)
+        return redirect("/?script=" + f.filename)
 
 if __name__ == '__main__':
     global port

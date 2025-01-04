@@ -47,6 +47,14 @@
                     fetch("?fontspeed=" + event.target.value);
                 });
             }
+
+            function deletescript()
+            {
+                if (window.confirm("Really delete {{ shownscript }}?"))
+                {
+                    window.location.replace("/delete?script={{ shownscript }}");
+                }
+            }
         </script>
     </head>
     <body onload="configvars();">
@@ -77,15 +85,18 @@
                 </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-sm-6">
                 <!-- Upload -->
-                    <form enctype="multipart/form-data" method="post">
+                    <form enctype="multipart/form-data" method="post" id="uploadscript">
                         <div class="input-group">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                            <input type="file" class="form-control" id="file" name="file" aria-describedby="uploadbutton">
+                            <button class="btn btn-primary" type="button" id="uploadbutton" type="submit" onClick="document.forms['uploadscript'].submit();">Upload</button>
                         </div>
                     </form>
                 </div>
+            <div class="col">
+                <a class="btn btn-danger" onclick="deletescript();">Delete</a>
+            </div>
             <div class="col text-end">
                 {% if currentscript == shownscript %}
                     <button class="btn btn-secondary" disabled>Current script</button>
