@@ -57,7 +57,7 @@ sudo dpkg -i footswitch_1.0.0_arm64.deb
 ### Configuration
 You can run `./configure_pedals.sh` to set the default pedal configuration:
 |Left pedal      |Center pedal|Right pedal    |
-+----------------+------------+---------------+
+|----------------|------------|---------------|
 |Scroll backwards|Configure   |Scroll forwards|
 
 
