@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+# This is incredibly hacky and should be rewritten as a class.
+
 from fileinput import filename
 from flask import *
 import configparser
@@ -170,4 +173,4 @@ def success():
 if __name__ == '__main__':
     global port
     readConfig()
-    app.run(debug=False, port=port)
+    app.run(debug=False, port=port, host='0.0.0.0')
